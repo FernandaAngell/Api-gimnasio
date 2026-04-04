@@ -40,6 +40,10 @@ Registro y seguimiento del progreso físico (peso y fechas).
 
 ---
 
+## 🚀 Demo
+
+🔗 [Ver aplicación en vivo](https://api-gimnasio.vercel.app)
+
 ## 📊 Archivos incluidos
 
 * `main.py` 🚀
