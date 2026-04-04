@@ -44,7 +44,7 @@ def listar(db: Session = Depends(get_db)):
 def login(data: LoginData, db: Session = Depends(get_db)):
     usuario = db.query(Usuario).filter(Usuario.email == data.email).first()
 
-    if not usuario or not verify_password(data.password, usuario.password):
+    if not usuario or not verify_password(data.password[:72], usuario.password):
         raise HTTPException(status_code=401, detail="Credenciales incorrectas")
 
     token = create_token({"sub": str(usuario.id), "nombre": usuario.nombre})
