@@ -1,19 +1,19 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+import os
 
-# Usamos SQLite (no necesita instalación extra)
-DATABASE_URL = "sqlite:///./gimnasio.db"
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./gimnasio.db")
 
-engine = create_engine(
-    DATABASE_URL, connect_args={"check_same_thread": False}
-)
+# SQLite necesita check_same_thread=False, PostgreSQL no acepta ese argumento
+connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
+
+engine = create_engine(DATABASE_URL, connect_args=connect_args)
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
-# Función para obtener sesión en cada request
 def get_db():
     db = SessionLocal()
     try:

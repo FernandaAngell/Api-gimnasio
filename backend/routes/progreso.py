@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from ..database import get_db
+from database import get_db
 from models import Progreso, Usuario
 from schemas import ProgresoCreate, ProgresoResponse
 from datetime import date

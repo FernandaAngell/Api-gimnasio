@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from ..database import get_db
-from ..models import Usuario
-from ..schemas import UsuarioCreate, UsuarioResponse, LoginData
-from ..auth import hash_password, verify_password, create_token
+from database import get_db
+from models import Usuario
+from schemas import UsuarioCreate, UsuarioResponse, LoginData
+from auth import hash_password, verify_password, create_token
 import re
 
 router = APIRouter(prefix="/usuarios", tags=["Usuarios"])
@@ -29,7 +29,7 @@ def registrar(data: UsuarioCreate, db: Session = Depends(get_db)):
     nuevo = Usuario(
         nombre=data.nombre,
         email=data.email,
-        password=hash_password(data.password)
+        password=hash_password(data.password[:72])
     )
     db.add(nuevo)
     db.commit()
