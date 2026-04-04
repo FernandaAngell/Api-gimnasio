@@ -12,14 +12,17 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS
+# CORS 🔥
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 👈 ESTE CAMBIO
+    allow_origins=[
+        "http://localhost:5173",
+        "https://api-gimnasio.vercel.app"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Registrar rutas
-app.include_router(usuarios.router)
+# Rutas
+app.include_router(usuarios.router, prefix="/usuarios")
