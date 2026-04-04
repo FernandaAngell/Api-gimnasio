@@ -5,8 +5,8 @@
       "destination": "https://api-gimnasio-2.onrender.com/:path*"
     },
     {
-      "source": "/(.*)",
-      "destination": "/"
+      "source": "/:path*",
+      "destination": "/index.html"
     }
   ]
 }
