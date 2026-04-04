@@ -25,4 +25,4 @@ app.add_middleware(
 )
 
 # Rutas
-app.include_router(usuarios.router, prefix="/usuarios")
+app.include_router(usuarios.router)
