@@ -3,7 +3,7 @@ import axios from "axios";
 const BASE_URL = "/api";
 
 const api = axios.create({
-  baseURL: "https://api-gimnasio-2.onrender.com"});
+  baseURL: "https://api-gimnasio-2.onrender.com/"});
 
 export const registrarUsuario = (data) => api.post("/usuarios/", data);
 export const loginUsuario     = (data) => api.post("/usuarios/login", data);
