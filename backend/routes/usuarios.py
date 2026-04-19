@@ -24,7 +24,7 @@ def registrar(data: UsuarioCreate, db: Session = Depends(get_db)):
     nuevo = Usuario(
         nombre=data.nombre,
         email=data.email,
-        password=hash_password(data.password)
+        password=data.password
     )
     db.add(nuevo)
     db.commit()
