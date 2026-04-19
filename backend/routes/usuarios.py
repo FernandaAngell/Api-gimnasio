@@ -22,10 +22,10 @@ def registrar(data: UsuarioCreate, db: Session = Depends(get_db)):
     if not password_valida(data.password):
         raise HTTPException(status_code=400, detail="La contraseña debe tener mínimo 8 caracteres, una mayúscula y un número")
     nuevo = Usuario(
-        nombre=data.nombre,
-        email=data.email,
-        password=data.password
-    )
+    nombre=data.nombre,
+    email=data.email,
+    password=hash_password(data.password)
+)
     db.add(nuevo)
     db.commit()
     db.refresh(nuevo)
