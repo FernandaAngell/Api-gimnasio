@@ -26,9 +26,9 @@ export default function Registro() {
     <div style={styles.container}>
       <div style={styles.card}>
         <h2 style={styles.titulo}>Crear cuenta 🏋️</h2>
-        <input style={styles.input} name="nombre"   placeholder="Nombre"
+        <input style={styles.input} name="nombre" placeholder="Nombre"
           onChange={handleChange} />
-        <input style={styles.input} name="email"    placeholder="Email"
+        <input style={styles.input} name="email" placeholder="Email"
           type="email" onChange={handleChange} />
         <input style={styles.input} name="password" placeholder="Contraseña"
           type="password" onChange={handleChange} />

@@ -5,7 +5,6 @@ import os
 
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./gimnasio.db")
 
-# SQLite necesita check_same_thread=False, PostgreSQL no acepta ese argumento
 connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
 
 engine = create_engine(DATABASE_URL, connect_args=connect_args)

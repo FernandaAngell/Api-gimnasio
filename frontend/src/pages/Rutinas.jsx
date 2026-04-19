@@ -2,12 +2,12 @@ import { useState, useEffect } from "react";
 import { listarRutinas, crearRutina, asignarRutina } from "../services/api";
 
 export default function Rutinas() {
-  const [rutinas, setRutinas]         = useState([]);
-  const [form, setForm]               = useState({ nombre_rutina:"", nivel:"principiante" });
-  const [usuarioId, setUsuarioId]     = useState("");
-  const [rutinaId, setRutinaId]       = useState("");
-  const [mensaje, setMensaje]         = useState("");
-  const [error, setError]             = useState("");
+  const [rutinas, setRutinas]     = useState([]);
+  const [form, setForm]           = useState({ nombre_rutina:"", nivel:"principiante" });
+  const [usuarioId, setUsuarioId] = useState("");
+  const [rutinaId, setRutinaId]   = useState("");
+  const [mensaje, setMensaje]     = useState("");
+  const [error, setError]         = useState("");
 
   useEffect(() => { cargarRutinas(); }, []);
 
@@ -46,8 +46,6 @@ export default function Rutinas() {
   return (
     <div style={styles.container}>
       <h2 style={styles.titulo}>🏋️ Rutinas</h2>
-
-      {/* Crear rutina */}
       <div style={styles.card}>
         <h3 style={styles.subtitulo}>Crear nueva rutina</h3>
         <input style={styles.input} placeholder="Nombre de la rutina"
@@ -60,8 +58,6 @@ export default function Rutinas() {
         </select>
         <button style={styles.btn} onClick={handleCrear}>Crear Rutina</button>
       </div>
-
-      {/* Asignar rutina */}
       <div style={styles.card}>
         <h3 style={styles.subtitulo}>Asignar rutina a usuario</h3>
         <input style={styles.input} placeholder="ID del usuario" type="number"
@@ -70,11 +66,8 @@ export default function Rutinas() {
           onChange={(e) => setRutinaId(e.target.value)} />
         <button style={styles.btn} onClick={handleAsignar}>Asignar</button>
       </div>
-
       {mensaje && <p style={styles.ok}>{mensaje}</p>}
       {error   && <p style={styles.error}>{error}</p>}
-
-      {/* Lista de rutinas */}
       <div style={styles.card}>
         <h3 style={styles.subtitulo}>Rutinas disponibles</h3>
         {rutinas.length === 0 ? (
@@ -83,9 +76,7 @@ export default function Rutinas() {
           rutinas.map((r) => (
             <div key={r.id} style={styles.rutina}>
               <span style={styles.nombre}>{r.nombre_rutina}</span>
-              <span style={{ ...styles.nivel, color: coloresNivel[r.nivel] }}>
-                {r.nivel}
-              </span>
+              <span style={{ ...styles.nivel, color: coloresNivel[r.nivel] }}>{r.nivel}</span>
               <span style={styles.id}>ID: {r.id}</span>
             </div>
           ))

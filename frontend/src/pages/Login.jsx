@@ -14,8 +14,8 @@ export default function Login() {
     setError("");
     try {
       const res = await loginUsuario(form);
-      localStorage.setItem("token",      res.data.access_token);
-      localStorage.setItem("nombre",     res.data.usuario);
+      localStorage.setItem("token",  res.data.access_token);
+      localStorage.setItem("nombre", res.data.usuario);
       navigate("/rutinas");
     } catch (err) {
       setError(err.response?.data?.detail || "Error al iniciar sesión");
@@ -26,7 +26,7 @@ export default function Login() {
     <div style={styles.container}>
       <div style={styles.card}>
         <h2 style={styles.titulo}>Iniciar sesión 🔐</h2>
-        <input style={styles.input} name="email"    placeholder="Email"
+        <input style={styles.input} name="email" placeholder="Email"
           type="email" onChange={handleChange} />
         <input style={styles.input} name="password" placeholder="Contraseña"
           type="password" onChange={handleChange} />

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { registrarProgreso, verProgreso, verCambio } from "../services/api";
 
 export default function Progreso() {
-  const [form, setForm]         = useState({ usuario_id:"", peso:"", fecha:"" });
+  const [form, setForm]           = useState({ usuario_id:"", peso:"", fecha:"" });
   const [usuarioId, setUsuarioId] = useState("");
   const [registros, setRegistros] = useState([]);
   const [cambio, setCambio]       = useState(null);
@@ -42,8 +42,6 @@ export default function Progreso() {
   return (
     <div style={styles.container}>
       <h2 style={styles.titulo}>📊 Progreso</h2>
-
-      {/* Registrar progreso */}
       <div style={styles.card}>
         <h3 style={styles.subtitulo}>Registrar progreso</h3>
         <input style={styles.input} placeholder="ID del usuario" type="number"
@@ -55,8 +53,6 @@ export default function Progreso() {
         <button style={styles.btn} onClick={handleRegistrar}>Registrar</button>
         {mensaje && <p style={styles.ok}>{mensaje}</p>}
       </div>
-
-      {/* Consultar progreso */}
       <div style={styles.card}>
         <h3 style={styles.subtitulo}>Consultar progreso</h3>
         <input style={styles.input} placeholder="ID del usuario" type="number"
@@ -67,8 +63,6 @@ export default function Progreso() {
             Calcular cambio ⚖️
           </button>
         </div>
-
-        {/* Tabla de registros */}
         {registros.length > 0 && (
           <table style={styles.tabla}>
             <thead>
@@ -87,12 +81,10 @@ export default function Progreso() {
             </tbody>
           </table>
         )}
-
-        {/* Cambio de peso */}
         {cambio && (
           <div style={styles.cambio}>
             <p>Peso inicial: <strong>{cambio.peso_inicial} kg</strong></p>
-            <p>Peso actual:  <strong>{cambio.peso_actual} kg</strong></p>
+            <p>Peso actual: <strong>{cambio.peso_actual} kg</strong></p>
             <p>Cambio: <strong style={{color: cambio.cambio_kg < 0 ? "#6bff6b" : "#ff6b6b"}}>
               {cambio.cambio_kg} kg {cambio.tendencia}
             </strong></p>
@@ -100,7 +92,6 @@ export default function Progreso() {
           </div>
         )}
       </div>
-
       {error && <p style={styles.error}>{error}</p>}
     </div>
   );
@@ -118,8 +109,7 @@ const styles = {
                borderRadius:"8px", cursor:"pointer", fontWeight:"bold" },
   btnGroup:  { display:"flex", gap:"10px" },
   tabla:     { width:"100%", borderCollapse:"collapse", marginTop:"10px" },
-  th:        { color:"#e94560", padding:"10px", textAlign:"left",
-               borderBottom:"1px solid #333" },
+  th:        { color:"#e94560", padding:"10px", textAlign:"left", borderBottom:"1px solid #333" },
   td:        { color:"white", padding:"10px", borderBottom:"1px solid #222" },
   cambio:    { background:"#16213e", padding:"16px", borderRadius:"8px", color:"white" },
   ok:        { color:"#6bff6b" },

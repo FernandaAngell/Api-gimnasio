@@ -19,17 +19,12 @@ def password_valida(password: str) -> bool:
 def registrar(data: UsuarioCreate, db: Session = Depends(get_db)):
     if db.query(Usuario).filter(Usuario.email == data.email).first():
         raise HTTPException(status_code=400, detail="El email ya está registrado")
-
     if not password_valida(data.password):
-        raise HTTPException(
-            status_code=400,
-            detail="La contraseña debe tener mínimo 8 caracteres, una mayúscula y un número"
-        )
-
+        raise HTTPException(status_code=400, detail="La contraseña debe tener mínimo 8 caracteres, una mayúscula y un número")
     nuevo = Usuario(
         nombre=data.nombre,
         email=data.email,
-        password=hash_password(data.password[:72])
+        password=hash_password(data.password)
     )
     db.add(nuevo)
     db.commit()
@@ -43,14 +38,7 @@ def listar(db: Session = Depends(get_db)):
 @router.post("/login")
 def login(data: LoginData, db: Session = Depends(get_db)):
     usuario = db.query(Usuario).filter(Usuario.email == data.email).first()
-
-    if not usuario or not verify_password(data.password[:72], usuario.password):
+    if not usuario or not verify_password(data.password, usuario.password):
         raise HTTPException(status_code=401, detail="Credenciales incorrectas")
-
     token = create_token({"sub": str(usuario.id), "nombre": usuario.nombre})
-
-    return {
-        "access_token": token,
-        "token_type": "bearer",
-        "usuario": usuario.nombre
-    }
+    return {"access_token": token, "token_type": "bearer", "usuario": usuario.nombre}
