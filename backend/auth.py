@@ -9,10 +9,10 @@ EXPIRE_MINUTES = 60
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 def hash_password(password: str):
-    return pwd_context.hash(password)
+    return pwd_context.hash(password[:72])  # 👈 CLAVE
 
 def verify_password(plain: str, hashed: str):
-    return pwd_context.verify(plain, hashed)
+    return pwd_context.verify(plain[:72], hashed)  # 👈 CLAVE
 
 def create_token(data: dict):
     to_encode = data.copy()

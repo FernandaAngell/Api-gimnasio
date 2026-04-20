@@ -1,22 +1,19 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from backend.database import get_db
-from backend.models import Usuario
-from backend.schemas import UsuarioCreate, UsuarioResponse, LoginData
-from backend.auth import hash_password, verify_password, create_token
+from database import get_db
+from models import Usuario
+from schemas import UsuarioCreate, UsuarioResponse, LoginData
+from auth import hash_password, verify_password, create_token
 import re
 
 router = APIRouter(prefix="/usuarios", tags=["Usuarios"])
 
-
 def password_valida(password: str) -> bool:
     return (
         len(password) >= 8 and
-        len(password) <= 72 and  # 🔥 límite bcrypt
         re.search(r"[A-Z]", password) and
         re.search(r"[0-9]", password)
     )
-
 
 @router.post("/", response_model=UsuarioResponse)
 def registrar(data: UsuarioCreate, db: Session = Depends(get_db)):
@@ -27,7 +24,7 @@ def registrar(data: UsuarioCreate, db: Session = Depends(get_db)):
     if not password_valida(data.password):
         raise HTTPException(
             status_code=400,
-            detail="La contraseña debe tener entre 8 y 72 caracteres, una mayúscula y un número"
+            detail="La contraseña debe tener mínimo 8 caracteres, una mayúscula y un número"
         )
 
     nuevo = Usuario(
@@ -42,11 +39,9 @@ def registrar(data: UsuarioCreate, db: Session = Depends(get_db)):
 
     return nuevo
 
-
 @router.get("/", response_model=list[UsuarioResponse])
 def listar(db: Session = Depends(get_db)):
     return db.query(Usuario).all()
-
 
 @router.post("/login")
 def login(data: LoginData, db: Session = Depends(get_db)):
