@@ -17,27 +17,25 @@ def password_valida(password: str) -> bool:
 
 @router.post("/", response_model=UsuarioResponse)
 def registrar(data: UsuarioCreate, db: Session = Depends(get_db)):
+    try:
+        if db.query(Usuario).filter(Usuario.email == data.email).first():
+            raise HTTPException(status_code=400, detail="El email ya está registrado")
 
-    if db.query(Usuario).filter(Usuario.email == data.email).first():
-        raise HTTPException(status_code=400, detail="El email ya está registrado")
-
-    if not password_valida(data.password):
-        raise HTTPException(
-            status_code=400,
-            detail="La contraseña debe tener mínimo 8 caracteres, una mayúscula y un número"
+        nuevo = Usuario(
+            nombre=data.nombre,
+            email=data.email,
+            password=hash_password(data.password)
         )
 
-    nuevo = Usuario(
-        nombre=data.nombre,
-        email=data.email,
-        password=hash_password(data.password)
-    )
+        db.add(nuevo)
+        db.commit()
+        db.refresh(nuevo)
 
-    db.add(nuevo)
-    db.commit()
-    db.refresh(nuevo)
+        return nuevo
 
-    return nuevo
+    except Exception as e:
+        print("ERROR REAL:", str(e))  # 👈 ESTO ES LO IMPORTANTE
+        raise HTTPException(status_code=500, detail=str(e))
 
 @router.get("/", response_model=list[UsuarioResponse])
 def listar(db: Session = Depends(get_db)):
