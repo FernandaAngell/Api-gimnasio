@@ -10,14 +10,13 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def hash_password(password: str):
-    clean = password.strip()[:72]  # 👈 SOLUCIÓN DEFINITIVA
+    clean = str(password).encode("utf-8")[:72].decode("utf-8", "ignore")
     return pwd_context.hash(clean)
 
 
 def verify_password(plain: str, hashed: str):
-    clean = plain.strip()[:72]
+    clean = str(plain).encode("utf-8")[:72].decode("utf-8", "ignore")
     return pwd_context.verify(clean, hashed)
-
 
 def create_token(data: dict):
     to_encode = data.copy()
