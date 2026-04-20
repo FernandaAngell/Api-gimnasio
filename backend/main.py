@@ -21,4 +21,4 @@ app.include_router(progreso.router)
 
 @app.get("/")
 def root():
-    return {"mensaje": "API Gimnasio funcionando ✅"}
+    return {"mensaje": "API funcionando ✅"}
