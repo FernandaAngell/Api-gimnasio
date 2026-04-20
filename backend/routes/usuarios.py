@@ -12,7 +12,7 @@ router = APIRouter(prefix="/usuarios", tags=["Usuarios"])
 def password_valida(password: str) -> bool:
     return (
         len(password) >= 8 and
-        len(password) <= 72 and  # 🔥 IMPORTANTE para bcrypt
+        len(password) <= 72 and  # 🔥 límite bcrypt
         re.search(r"[A-Z]", password) and
         re.search(r"[0-9]", password)
     )
@@ -21,18 +21,15 @@ def password_valida(password: str) -> bool:
 @router.post("/", response_model=UsuarioResponse)
 def registrar(data: UsuarioCreate, db: Session = Depends(get_db)):
 
-    # Verificar email duplicado
     if db.query(Usuario).filter(Usuario.email == data.email).first():
         raise HTTPException(status_code=400, detail="El email ya está registrado")
 
-    # Validar contraseña
     if not password_valida(data.password):
         raise HTTPException(
             status_code=400,
             detail="La contraseña debe tener entre 8 y 72 caracteres, una mayúscula y un número"
         )
 
-    # Crear usuario
     nuevo = Usuario(
         nombre=data.nombre,
         email=data.email,
