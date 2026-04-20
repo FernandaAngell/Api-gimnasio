@@ -19,6 +19,7 @@ app.include_router(usuarios.router)
 app.include_router(rutinas.router)
 app.include_router(progreso.router)
 
+
 @app.get("/")
 def root():
     return {"mensaje": "API funcionando ✅"}

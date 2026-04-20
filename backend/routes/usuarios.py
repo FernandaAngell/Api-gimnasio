@@ -8,19 +8,31 @@ import re
 
 router = APIRouter(prefix="/usuarios", tags=["Usuarios"])
 
+
 def password_valida(password: str) -> bool:
     return (
         len(password) >= 8 and
+        len(password) <= 72 and
         re.search(r"[A-Z]", password) and
         re.search(r"[0-9]", password)
     )
 
+
 @router.post("/", response_model=UsuarioResponse)
 def registrar(data: UsuarioCreate, db: Session = Depends(get_db)):
-    try:
-        if db.query(Usuario).filter(Usuario.email == data.email).first():
-            raise HTTPException(status_code=400, detail="El email ya está registrado")
 
+    data.password = data.password.strip()  # 👈 CLAVE
+
+    if db.query(Usuario).filter(Usuario.email == data.email).first():
+        raise HTTPException(status_code=400, detail="El email ya está registrado")
+
+    if not password_valida(data.password):
+        raise HTTPException(
+            status_code=400,
+            detail="La contraseña debe tener entre 8 y 72 caracteres, una mayúscula y un número"
+        )
+
+    try:
         nuevo = Usuario(
             nombre=data.nombre,
             email=data.email,
@@ -34,15 +46,19 @@ def registrar(data: UsuarioCreate, db: Session = Depends(get_db)):
         return nuevo
 
     except Exception as e:
-        print("ERROR REAL:", str(e))  # 👈 ESTO ES LO IMPORTANTE
+        print("ERROR REAL:", str(e))
         raise HTTPException(status_code=500, detail=str(e))
+
 
 @router.get("/", response_model=list[UsuarioResponse])
 def listar(db: Session = Depends(get_db)):
     return db.query(Usuario).all()
 
+
 @router.post("/login")
 def login(data: LoginData, db: Session = Depends(get_db)):
+
+    data.password = data.password.strip()
 
     usuario = db.query(Usuario).filter(Usuario.email == data.email).first()
 
